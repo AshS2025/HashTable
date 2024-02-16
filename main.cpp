@@ -129,12 +129,76 @@ void addStudent(Node* newNode, Node** &hash, int modulus, Node* current, int siz
 
 }
 
-void rehash(Node** &hash, int &size){
-  /*
+void rehash(Node** &hash, int &size) {
+
+  size = size * 2;
+
+  Node** newHash = new Node*[size];
+
+
+  for (int i = 0; i < size; i++) {
+
+    newHash[i] = nullptr;
+
+  }
+
+
+  for (int i = 0; i < size / 2; i++) {
+
+    Node* current = hash[i];
+
+
+    while (current != nullptr) {
+
+      Node* next = current->getNext();
+
+      int newModulo = current->getStudent()->getID() % size;
+
+
+      current->setNext(newHash[newModulo]);
+
+      newHash[newModulo] = current;
+
+
+      current = next;
+
+    }
+
+  }
+
+
+  for (int i = 0; i < size / 2; i++) {
+
+    Node* current = hash[i];
+
+    while (current != nullptr) {
+
+      Node* next = current->getNext();
+
+      delete current;
+
+      current = next;
+
+    }
+
+  }
+
+
+  delete[] hash;
+
+
+  // Update the hash pointer to point to the new hash table
+
+  hash = newHash;
+
+}
+
+/*void rehash(Node** &hash, int &size){
+  
     for loop through the original hash table and find all the non null things and rehash them
     also remember to check for linked nodes
     and make sure that there aren't any weird pointer things like set things back to null
-   */
+   
 
   cout << "inside function" << endl;
   size = size * 2;
@@ -181,7 +245,7 @@ void rehash(Node** &hash, int &size){
   hash = newHash;
   print(hash, size);
   cout << "after print" << endl;
-}
+  }*/
 
 void print(Node** &hash, int size){
   /*
@@ -199,7 +263,7 @@ void print(Node** &hash, int size){
     }
     }
     
-   */
+  */
 
   for (int i = 0; i < size; i++){
     if (hash[i] != NULL){
@@ -209,10 +273,8 @@ void print(Node** &hash, int size){
 	c = c->getNext();
       }
     }
-    cout << " " << endl;
+    // cout << " " << endl;
   }
-
-  cout << " " << endl;
 }
 
 void deleteStudent (Node** &hash, int size, int findId){
